@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+
+# venv
+.venv/
+
+# OS
+.DS_Store
+
+# large files（如果你不想传模型）
+# models/*.joblib
