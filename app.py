@@ -1,10 +1,12 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 # ============================================================
-# 页面基础设置
+# 页面配置
 # ============================================================
 st.set_page_config(
     page_title="Cardiovascular Risk Screening",
@@ -12,31 +14,30 @@ st.set_page_config(
     layout="centered"
 )
 
-
 # ============================================================
-# 自定义样式：背景、卡片、按钮、提示框
+# 样式：背景 + 卡片 + 按钮
 # ============================================================
 st.markdown(
     """
     <style>
     .stApp {
-        background: linear-gradient(180deg, #f4f8ff 0%, #eef7f1 100%);
+        background: linear-gradient(180deg, #eef4ff 0%, #f2fbf7 100%);
     }
 
     .main-title {
-        font-size: 2.2rem;
-        font-weight: 700;
+        font-size: 2.3rem;
+        font-weight: 800;
         color: #143d59;
-        margin-bottom: 0.3rem;
+        margin-bottom: 0.2rem;
     }
 
-    .sub-text {
-        font-size: 1rem;
+    .subtitle {
         color: #4a5568;
+        font-size: 1rem;
         margin-bottom: 1.2rem;
     }
 
-    .card {
+    .info-card {
         background: white;
         padding: 1.2rem 1.2rem 0.8rem 1.2rem;
         border-radius: 18px;
@@ -45,37 +46,33 @@ st.markdown(
     }
 
     .result-card {
-        background: #ffffff;
-        padding: 1.4rem;
+        background: white;
+        padding: 1.3rem;
         border-radius: 18px;
         box-shadow: 0 8px 24px rgba(20, 61, 89, 0.10);
         border-left: 8px solid #2b6cb0;
         margin-top: 1rem;
+        margin-bottom: 1rem;
     }
 
     .risk-low {
         color: #2f855a;
-        font-weight: 700;
+        font-weight: 800;
     }
 
     .risk-moderate {
         color: #b7791f;
-        font-weight: 700;
+        font-weight: 800;
     }
 
     .risk-high {
         color: #dd6b20;
-        font-weight: 700;
+        font-weight: 800;
     }
 
     .risk-very-high {
         color: #c53030;
-        font-weight: 700;
-    }
-
-    .small-note {
-        color: #718096;
-        font-size: 0.92rem;
+        font-weight: 800;
     }
 
     div.stButton > button {
@@ -84,18 +81,22 @@ st.markdown(
         border-radius: 12px;
         border: none;
         padding: 0.7rem 1.2rem;
-        font-weight: 600;
+        font-weight: 700;
     }
 
     div.stButton > button:hover {
         background-color: #1f4e85;
         color: white;
     }
+
+    .small-note {
+        color: #718096;
+        font-size: 0.92rem;
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
-
 
 # ============================================================
 # 风险分层
@@ -120,10 +121,8 @@ def risk_level_class(level: str) -> str:
     }
     return mapping.get(level, "")
 
-
 # ============================================================
 # 模型加载
-# 如果模型文件在 models/ 下，请改路径
 # ============================================================
 @st.cache_resource
 def load_user_model():
@@ -131,9 +130,8 @@ def load_user_model():
     threshold = joblib.load("calibrated_user_threshold.joblib")["threshold"]
     return model, threshold
 
-
 # ============================================================
-# 本地预测函数
+# 本地预测
 # ============================================================
 def predict_user_local(payload: dict):
     model, threshold = load_user_model()
@@ -150,7 +148,6 @@ def predict_user_local(payload: dict):
         "used_threshold": float(threshold),
         "message": "This tool is for cardiovascular risk screening only and does not constitute a medical diagnosis."
     }
-
 
 # ============================================================
 # 解释文本
@@ -225,24 +222,105 @@ def get_next_step_text(result: dict) -> str:
             "This does not confirm disease, but it does support prompt medical follow-up and objective clinical testing."
         )
 
+# ============================================================
+# 图表1：风险概率条形图
+# ============================================================
+def plot_risk_probability(prob: float):
+    fig, ax = plt.subplots(figsize=(6, 1.8))
+
+    ax.barh(["Risk Probability"], [prob], height=0.45)
+    ax.set_xlim(0, 1)
+    ax.set_xlabel("Probability")
+    ax.set_title("Estimated Cardiovascular Risk Probability")
+    ax.text(min(prob + 0.02, 0.92), 0, f"{prob:.3f}", va="center")
+
+    plt.tight_layout()
+    return fig
+
+# ============================================================
+# 图表2：风险因子分数图
+# 不是模型真实 SHAP，只是前端解释型可视化
+# ============================================================
+def compute_factor_scores(payload: dict):
+    scores = {
+        "Age": 0,
+        "BMI": 0,
+        "Smoking": 0,
+        "Diabetes": 0,
+        "Hypertension": 0,
+        "Physical Inactivity": 0
+    }
+
+    age = payload["RIDAGEYR"]
+    bmi = payload["BMXBMI"]
+
+    # 年龄
+    if age >= 65:
+        scores["Age"] = 100
+    elif age >= 55:
+        scores["Age"] = 75
+    elif age >= 45:
+        scores["Age"] = 50
+    elif age >= 35:
+        scores["Age"] = 25
+
+    # BMI
+    if bmi >= 35:
+        scores["BMI"] = 100
+    elif bmi >= 30:
+        scores["BMI"] = 75
+    elif bmi >= 25:
+        scores["BMI"] = 45
+    elif bmi >= 23:
+        scores["BMI"] = 20
+
+    # 吸烟
+    scores["Smoking"] = 100 if payload["SMQ020"] == 1 else 0
+
+    # 糖尿病
+    scores["Diabetes"] = 100 if payload["DIQ010"] == 1 else 0
+
+    # 高血压
+    scores["Hypertension"] = 100 if payload["BPQ020"] == 1 else 0
+
+    # 缺乏运动
+    scores["Physical Inactivity"] = 100 if payload["PAQ605"] == 2 else 0
+
+    return scores
+
+
+def plot_factor_scores(scores: dict):
+    labels = list(scores.keys())
+    values = list(scores.values())
+
+    fig, ax = plt.subplots(figsize=(7, 3.8))
+    ax.barh(labels, values)
+    ax.set_xlim(0, 100)
+    ax.set_xlabel("Relative Risk Contribution Score")
+    ax.set_title("Main Risk Factors in Current Screening Profile")
+
+    for i, v in enumerate(values):
+        ax.text(min(v + 2, 96), i, str(v), va="center")
+
+    plt.tight_layout()
+    return fig
 
 # ============================================================
 # 页面主体
 # ============================================================
 st.markdown('<div class="main-title">Cardiovascular Risk Screening</div>', unsafe_allow_html=True)
 st.markdown(
-    '<div class="sub-text">A lightweight screening tool based on self-reported information. '
-    'This page is designed for early risk awareness rather than diagnosis.</div>',
+    '<div class="subtitle">A lightweight self-report screening tool for early cardiovascular risk awareness.</div>',
     unsafe_allow_html=True
 )
 
 st.markdown(
     """
-    <div class="card">
-    <b>What this tool does</b><br>
-    It estimates whether your profile falls into a higher cardiovascular risk group based on a small set of user-reported variables.<br><br>
-    <b>What this tool does not do</b><br>
-    It does not diagnose heart disease, replace a clinician, or interpret acute symptoms.
+    <div class="info-card">
+    <b>Purpose</b><br>
+    This page estimates whether your profile falls into a higher cardiovascular risk group using a small set of self-reported variables.<br><br>
+    <b>Important boundary</b><br>
+    It is designed for screening, not diagnosis. A high-risk result does not confirm disease, and a low-risk result does not rule it out.
     </div>
     """,
     unsafe_allow_html=True
@@ -275,9 +353,9 @@ payload = {
 
 if st.button("Generate Risk Assessment"):
     result = predict_user_local(payload)
-    risk_class = risk_level_class(result["risk_level"])
     explanation = build_explanation(payload, result)
     next_step = get_next_step_text(result)
+    risk_class = risk_level_class(result["risk_level"])
 
     st.markdown(
         f"""
@@ -298,15 +376,23 @@ if st.button("Generate Risk Assessment"):
     st.subheader("Suggested next step")
     st.write(next_step)
 
+    st.subheader("Chart 1: Probability View")
+    fig1 = plot_risk_probability(result["risk_probability"])
+    st.pyplot(fig1)
+
+    st.subheader("Chart 2: Main Risk Factor Profile")
+    factor_scores = compute_factor_scores(payload)
+    fig2 = plot_factor_scores(factor_scores)
+    st.pyplot(fig2)
+
     st.subheader("Important note")
     st.info(
-        "This is a screening-oriented estimate. A high-risk result does not confirm disease, "
-        "and a low-risk result does not rule it out. If you have chest pain, shortness of breath, "
-        "fainting, or other concerning symptoms, seek medical care directly."
+        "This is a screening-oriented estimate. If you have chest pain, shortness of breath, fainting, "
+        "or rapidly worsening symptoms, seek medical care directly rather than relying on this tool."
     )
 
 st.markdown(
-    '<p class="small-note">Model scope: user-input screening only. '
-    'The professional / laboratory version has been removed from this page to keep the experience simple and consistent.</p>',
+    '<p class="small-note">This page only keeps the user-input screening model. '
+    'The professional / laboratory version has been removed to keep the product experience simple, stable, and easier to interpret.</p>',
     unsafe_allow_html=True
 )
