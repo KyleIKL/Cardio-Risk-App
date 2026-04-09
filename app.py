@@ -879,41 +879,28 @@ st.markdown(
     f'<p class="small-note">{T["footer"]}</p>',
     unsafe_allow_html=True
 )
-st.markdown(
-    """
-    <hr style="margin-top: 2.5rem; margin-bottom: 1rem;">
+st.markdown("""
+<hr style="margin-top: 2.5rem; margin-bottom: 1rem;">
 
-    <div style="text-align: center; font-size: 0.95rem; color: #4a5568;">
-        <b>Author:</b> Zikai &quot;Constantin&quot; Wang
-    </div>
+<div style="text-align: center; font-size: 0.95rem; color: #4a5568;">
+    <b>Author:</b> Zikai "Constantin" Wang
+</div>
 
-    <div style="text-align: center; font-size: 0.9rem; color: #718096; margin-top: 0.3rem;">
-        <b>Data Source:</b> U.S. Centers for Disease Control and Prevention (CDC), NHANES datasets
-    </div>
+<div style="text-align: center; font-size: 0.9rem; color: #718096; margin-top: 0.3rem;">
+    <b>Data Source:</b> U.S. CDC (NHANES)
+</div>
 
-    <div style="margin-top: 1.2rem; padding: 1rem; border-radius: 12px; 
-                background-color: #f8fafc; color: #4a5568; font-size: 0.9rem; line-height: 1.6;">
-        
-        <b>Disclaimer</b><br><br>
+<div style="margin-top: 1.2rem; padding: 1rem; border-radius: 12px; 
+            background-color: #f8fafc; color: #4a5568; font-size: 0.9rem; line-height: 1.6;">
+    
+    <b>Disclaimer</b><br><br>
 
-        This application is designed for <b>educational and screening purposes only</b>. 
-        It does not provide medical advice, diagnosis, or treatment. The risk estimates 
-        generated are based on statistical models trained on publicly available datasets 
-        and should be interpreted as <b>probabilistic indicators rather than clinical conclusions</b>.<br><br>
+    This application is for <b>educational and screening purposes only</b>.<br><br>
 
-        Users should be aware that:
-        <ul>
-            <li>The model relies on <b>self-reported or simplified input variables</b>, which may not fully capture an individual’s health condition.</li>
-            <li>The predictions are subject to <b>model limitations, dataset bias, and generalization error</b>.</li>
-            <li>A low predicted risk does not guarantee absence of disease, and a high predicted risk does not confirm diagnosis.</li>
-        </ul>
+    The results are probabilistic and do not constitute medical diagnosis.<br><br>
 
-        If you experience symptoms such as chest pain, shortness of breath, dizziness, 
-        or any concerning physical condition, please seek evaluation from a <b>qualified healthcare professional</b> immediately.<br><br>
+    Please consult a qualified healthcare professional if needed.<br><br>
 
-        By using this tool, you acknowledge that the developers and data providers 
-        bear <b>no responsibility for any decisions or actions</b> taken based on the output.
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+    Use of this tool implies acceptance of all risks.
+</div>
+""", unsafe_allow_html=True)
