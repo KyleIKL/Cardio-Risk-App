@@ -6,15 +6,14 @@ import numpy as np
 import matplotlib
 
 # ============================================================
-# Matplotlib 字体修正
-# 尽量避免中文显示成方块
+# Matplotlib 设置
+# 不再依赖中文字体在图里直接渲染
+# 图内文本统一用英文短标签，避免中文方框问题
 # ============================================================
 matplotlib.rcParams["font.sans-serif"] = [
-    "Microsoft YaHei",
-    "SimHei",
-    "Noto Sans CJK SC",
-    "Arial Unicode MS",
-    "DejaVu Sans"
+    "DejaVu Sans",
+    "Arial",
+    "Liberation Sans"
 ]
 matplotlib.rcParams["axes.unicode_minus"] = False
 
@@ -105,26 +104,6 @@ st.markdown(
         color: #b91c1c;
     }
 
-    .risk-low {
-        color: #2f855a;
-        font-weight: 800;
-    }
-
-    .risk-moderate {
-        color: #b7791f;
-        font-weight: 800;
-    }
-
-    .risk-high {
-        color: #dd6b20;
-        font-weight: 800;
-    }
-
-    .risk-very-high {
-        color: #c53030;
-        font-weight: 800;
-    }
-
     .small-note {
         color: #718096;
         font-size: 0.92rem;
@@ -149,17 +128,16 @@ st.markdown(
 )
 
 # ============================================================
-# 多语言
+# 多语言文本
 # ============================================================
 TEXT = {
     "zh": {
         "app_title": "心血管风险筛查",
         "subtitle": "一个基于少量自报信息的轻量化心血管风险早筛工具。",
-        "language": "语言",
         "purpose_title": "用途",
-        "purpose_text": "本页面使用少量自报变量，估计你的特征是否落入更高的心血管风险人群。",
+        "purpose_text": "本页面使用少量自报变量，估计你的特征是否落入更高的心血管风险人群。这个结果更适合用作风险预警和健康管理参考，而不是医疗诊断结论。",
         "boundary_title": "重要边界",
-        "boundary_text": "这是筛查工具，不是诊断工具。高风险结果不代表已经确诊，低风险结果也不代表绝对没有问题。",
+        "boundary_text": "这是筛查工具，不是诊断工具。高风险结果不代表已经确诊，低风险结果也不代表绝对没有问题。如果你已经有胸痛、明显气短、晕厥、心悸加重或活动后不适等症状，应该优先就医。",
         "enter_info": "填写你的信息",
         "age": "年龄",
         "sex": "性别",
@@ -186,25 +164,25 @@ TEXT = {
         "threshold": "模型使用阈值",
         "flagged": "是否被模型标记为较高风险",
         "interpretation": "结果解释",
-        "chart1": "图表1：风险概率视图",
-        "chart2": "图表2：风险因子雷达对比",
-        "chart3": "图表3：与你的数据集基线风险比较",
+        "how_to_read": "如何理解这个结果",
+        "chart1_title": "图表1：风险概率视图",
+        "chart2_title": "图表2：你的风险因子画像 vs 参考低风险画像",
+        "chart3_title": "图表3：你的估计风险 vs 数据集基线风险",
         "your_profile": "你的画像",
         "reference_profile": "参考低风险画像",
         "advice_title": "个性化建议",
         "important_note": "重要提示",
-        "important_note_text": "这是筛查导向的估计。如果你出现胸痛、呼吸困难、晕厥或快速恶化的症状，请直接就医，而不要依赖本工具。",
-        "footer": "本页面仅保留用户输入版筛查模型，以保证产品体验更简单、稳定、易解释。新增的家族史与饮酒选项当前用于建议和解释，不进入模型打分。",
+        "important_note_text": "这是筛查导向的估计，不是医疗诊断。如果你存在胸痛、呼吸困难、晕厥、持续胸闷或症状快速加重，请直接就医，而不要依赖本工具。",
+        "footer": "本页面仅保留用户输入版筛查模型，以保证产品体验更简单、稳定、易解释。新增的家族史与饮酒选项当前用于解释和建议，不进入模型打分。",
         "message": "本工具仅用于心血管风险筛查，不构成医疗诊断。"
     },
     "en": {
         "app_title": "Cardiovascular Risk Screening",
         "subtitle": "A lightweight self-report tool for early cardiovascular risk awareness.",
-        "language": "Language",
         "purpose_title": "Purpose",
-        "purpose_text": "This page uses a small set of self-reported variables to estimate whether your profile falls into a higher cardiovascular risk group.",
+        "purpose_text": "This page uses a small set of self-reported variables to estimate whether your profile falls into a higher cardiovascular risk group. The result should be interpreted as an early-warning and health-management reference rather than a medical diagnosis.",
         "boundary_title": "Important boundary",
-        "boundary_text": "This is a screening tool, not a diagnostic tool. A high-risk result does not confirm disease, and a low-risk result does not rule it out.",
+        "boundary_text": "This is a screening tool, not a diagnostic tool. A high-risk result does not confirm disease, and a low-risk result does not rule it out. If you already have chest pain, marked shortness of breath, fainting, worsening palpitations, or exertional discomfort, you should seek medical care directly.",
         "enter_info": "Enter your information",
         "age": "Age",
         "sex": "Sex",
@@ -231,25 +209,25 @@ TEXT = {
         "threshold": "Threshold used by the model",
         "flagged": "Flagged as higher-risk by model",
         "interpretation": "Interpretation",
-        "chart1": "Chart 1: Probability View",
-        "chart2": "Chart 2: Radar Comparison of Main Risk Drivers",
-        "chart3": "Chart 3: Comparison with Baseline Dataset Risk",
+        "how_to_read": "How to read this result",
+        "chart1_title": "Chart 1: Probability View",
+        "chart2_title": "Chart 2: Your Risk Profile vs Reference Low-Risk Profile",
+        "chart3_title": "Chart 3: Your Estimated Risk vs Baseline Dataset Risk",
         "your_profile": "Your Profile",
         "reference_profile": "Reference Low-Risk Profile",
         "advice_title": "Personalized Advice",
         "important_note": "Important note",
-        "important_note_text": "This is a screening-oriented estimate. If you have chest pain, shortness of breath, fainting, or rapidly worsening symptoms, seek medical care directly rather than relying on this tool.",
+        "important_note_text": "This is a screening-oriented estimate, not a medical diagnosis. If you have chest pain, shortness of breath, fainting, persistent chest discomfort, or rapidly worsening symptoms, seek medical care directly.",
         "footer": "This page keeps only the user-input screening model to maintain a simpler and more interpretable product experience. The added family-history and alcohol fields are currently used for interpretation and advice, not model scoring.",
         "message": "This tool is for cardiovascular risk screening only and does not constitute a medical diagnosis."
     },
     "es": {
         "app_title": "Detección de Riesgo Cardiovascular",
         "subtitle": "Una herramienta ligera basada en información autodeclarada para la detección temprana del riesgo cardiovascular.",
-        "language": "Idioma",
         "purpose_title": "Propósito",
-        "purpose_text": "Esta página utiliza un pequeño conjunto de variables autodeclaradas para estimar si tu perfil cae en un grupo de mayor riesgo cardiovascular.",
+        "purpose_text": "Esta página utiliza un pequeño conjunto de variables autodeclaradas para estimar si tu perfil cae en un grupo de mayor riesgo cardiovascular. El resultado debe interpretarse como una referencia de alerta temprana y de gestión de la salud, no como un diagnóstico médico.",
         "boundary_title": "Límite importante",
-        "boundary_text": "Esta es una herramienta de cribado, no de diagnóstico. Un resultado de alto riesgo no confirma enfermedad, y un resultado de bajo riesgo no la descarta.",
+        "boundary_text": "Esta es una herramienta de cribado, no de diagnóstico. Un resultado de alto riesgo no confirma enfermedad, y un resultado de bajo riesgo no la descarta. Si ya presentas dolor torácico, dificultad respiratoria marcada, desmayo, palpitaciones en empeoramiento o malestar con el esfuerzo, debes buscar atención médica directa.",
         "enter_info": "Introduce tu información",
         "age": "Edad",
         "sex": "Sexo",
@@ -276,14 +254,15 @@ TEXT = {
         "threshold": "Umbral utilizado por el modelo",
         "flagged": "Marcado por el modelo como mayor riesgo",
         "interpretation": "Interpretación",
-        "chart1": "Gráfico 1: Vista de probabilidad",
-        "chart2": "Gráfico 2: Comparación radar de los principales factores de riesgo",
-        "chart3": "Gráfico 3: Comparación con el riesgo basal del conjunto de datos",
+        "how_to_read": "Cómo interpretar este resultado",
+        "chart1_title": "Gráfico 1: Vista de probabilidad",
+        "chart2_title": "Gráfico 2: Tu perfil de riesgo vs perfil de referencia de bajo riesgo",
+        "chart3_title": "Gráfico 3: Tu riesgo estimado vs riesgo basal del conjunto de datos",
         "your_profile": "Tu perfil",
         "reference_profile": "Perfil de referencia de bajo riesgo",
         "advice_title": "Consejos personalizados",
         "important_note": "Nota importante",
-        "important_note_text": "Esta es una estimación orientada al cribado. Si tienes dolor en el pecho, dificultad para respirar, desmayo o síntomas que empeoran rápidamente, busca atención médica directamente.",
+        "important_note_text": "Esta es una estimación orientada al cribado, no un diagnóstico médico. Si tienes dolor en el pecho, dificultad respiratoria, desmayo, molestias torácicas persistentes o síntomas que empeoran rápidamente, busca atención médica directa.",
         "footer": "Esta página solo mantiene el modelo de cribado basado en la información del usuario para ofrecer una experiencia más simple y fácil de interpretar. Los campos añadidos de antecedentes familiares y alcohol se usan actualmente para la interpretación y los consejos, no para la puntuación del modelo.",
         "message": "Esta herramienta es solo para cribado de riesgo cardiovascular y no constituye un diagnóstico médico."
     }
@@ -338,7 +317,6 @@ def load_user_model():
 
 # ============================================================
 # 预测
-# 注意：模型仍只吃原先那7个字段
 # ============================================================
 def predict_user_local(payload_model: dict):
     model, threshold = load_user_model()
@@ -357,90 +335,160 @@ def predict_user_local(payload_model: dict):
     }
 
 # ============================================================
-# 解释文本
+# 解释文本：明显加长
 # ============================================================
 def build_explanation(payload_all: dict, result: dict) -> str:
-    reasons = []
-
     def tr(zh, en, es):
         return {"zh": zh, "en": en, "es": es}[lang]
 
+    drivers = []
+
     if payload_all["RIDAGEYR"] >= 60:
-        reasons.append(tr("年龄处于更高风险区间", "your age is in a higher-risk range", "tu edad se encuentra en un rango de mayor riesgo"))
+        drivers.append(tr(
+            "年龄已经进入典型的心血管风险上升区间",
+            "age has already entered a typical range where cardiovascular risk rises more noticeably",
+            "la edad ya se encuentra en un intervalo típico donde el riesgo cardiovascular aumenta de forma más evidente"
+        ))
     elif payload_all["RIDAGEYR"] >= 45:
-        reasons.append(tr("年龄提示存在中等基础心血管风险", "your age suggests a moderate baseline cardiovascular risk", "tu edad sugiere un riesgo cardiovascular basal moderado"))
-
-    if payload_all["BMXBMI"] >= 30:
-        reasons.append(tr("BMI处于肥胖范围", "your BMI is in the obesity range", "tu IMC se encuentra en el rango de obesidad"))
-    elif payload_all["BMXBMI"] >= 25:
-        reasons.append(tr("BMI高于推荐范围", "your BMI is above the recommended range", "tu IMC está por encima del rango recomendado"))
-
-    if payload_all["SMQ020"] == 1:
-        reasons.append(tr("当前吸烟会增加心血管负担", "current smoking increases cardiovascular burden", "el tabaquismo actual aumenta la carga cardiovascular"))
-
-    if payload_all["DIQ010"] == 1:
-        reasons.append(tr("糖尿病病史是重要心血管风险因素", "a history of diabetes is a major cardiovascular risk factor", "los antecedentes de diabetes son un factor importante de riesgo cardiovascular"))
-
-    if payload_all["BPQ020"] == 1:
-        reasons.append(tr("高血压病史与心血管风险密切相关", "a history of hypertension is strongly associated with cardiovascular risk", "los antecedentes de hipertensión están fuertemente asociados al riesgo cardiovascular"))
-
-    if payload_all["PAQ605"] == 2:
-        reasons.append(tr("缺乏中等强度身体活动会减少保护作用", "limited moderate physical activity may reduce protective benefit", "la escasa actividad física moderada puede reducir el efecto protector"))
-
-    if payload_all["FAMILY_HISTORY"] == 1:
-        reasons.append(tr("家族史提示存在额外背景风险", "family history suggests additional background risk", "los antecedentes familiares sugieren un riesgo de fondo adicional"))
-
-    if payload_all["ALCOHOL_LEVEL"] == 3:
-        reasons.append(tr("经常饮酒可能进一步增加风险负担", "frequent alcohol intake may further increase risk burden", "el consumo frecuente de alcohol puede aumentar aún más la carga de riesgo"))
-
-    if not reasons:
-        reasons.append(tr(
-            "当前自报信息中未出现明显的主要风险信号",
-            "your self-reported profile does not show strong major risk flags in this screening model",
-            "tu perfil autodeclarado no muestra señales fuertes de riesgo principal en este modelo de cribado"
+        drivers.append(tr(
+            "年龄提示基础风险已不再属于最低水平",
+            "age suggests that baseline risk is no longer in the lowest range",
+            "la edad sugiere que el riesgo basal ya no se encuentra en el nivel más bajo"
         ))
 
-    if len(reasons) == 1:
-        detail = reasons[0]
+    if payload_all["BMXBMI"] >= 30:
+        drivers.append(tr(
+            "体重状态已经进入肥胖范围，这通常会和代谢、血压及长期心血管负担一起变化",
+            "weight status is already in the obesity range, which often moves together with metabolism, blood pressure, and long-term cardiovascular burden",
+            "el estado de peso ya se encuentra en el rango de obesidad, lo que suele ir acompañado de cambios en el metabolismo, la presión arterial y la carga cardiovascular a largo plazo"
+        ))
+    elif payload_all["BMXBMI"] >= 25:
+        drivers.append(tr(
+            "BMI高于理想范围，提示体重管理仍有改善空间",
+            "BMI is above the ideal range, suggesting there is still room for improvement in weight management",
+            "el IMC está por encima del rango ideal, lo que sugiere que todavía hay margen de mejora en el control del peso"
+        ))
+
+    if payload_all["SMQ020"] == 1:
+        drivers.append(tr(
+            "吸烟会持续增加心血管系统负担，并放大其他风险因素的影响",
+            "smoking adds ongoing burden to the cardiovascular system and can amplify the impact of other risk factors",
+            "fumar añade una carga continua al sistema cardiovascular y puede amplificar el impacto de otros factores de riesgo"
+        ))
+
+    if payload_all["DIQ010"] == 1:
+        drivers.append(tr(
+            "糖尿病病史是心血管风险评估中非常重要的结构性因素之一",
+            "a history of diabetes is one of the more structurally important factors in cardiovascular risk assessment",
+            "los antecedentes de diabetes son uno de los factores estructuralmente más importantes en la evaluación del riesgo cardiovascular"
+        ))
+
+    if payload_all["BPQ020"] == 1:
+        drivers.append(tr(
+            "高血压病史通常意味着血管长期承受更高压力，这在风险形成中很关键",
+            "a history of hypertension often means the vascular system has been exposed to higher long-term pressure, which is highly relevant for risk formation",
+            "los antecedentes de hipertensión suelen implicar que el sistema vascular ha estado expuesto a una presión más alta a largo plazo, lo que es muy relevante para la formación del riesgo"
+        ))
+
+    if payload_all["PAQ605"] == 2:
+        drivers.append(tr(
+            "中等强度活动不足意味着保护性因素偏弱",
+            "insufficient moderate physical activity suggests that protective lifestyle factors are weaker than ideal",
+            "la falta de actividad física moderada sugiere que los factores protectores del estilo de vida son más débiles de lo ideal"
+        ))
+
+    if payload_all["FAMILY_HISTORY"] == 1:
+        drivers.append(tr(
+            "家族史提示存在额外背景风险，即使它没有直接进入当前模型打分，也应在解释上被认真考虑",
+            "family history suggests additional background risk, and even though it is not directly scored by the current model, it should still be taken seriously in interpretation",
+            "los antecedentes familiares sugieren un riesgo de fondo adicional y, aunque no entren directamente en la puntuación del modelo actual, deben considerarse seriamente en la interpretación"
+        ))
+
+    if payload_all["ALCOHOL_LEVEL"] == 3:
+        drivers.append(tr(
+            "经常饮酒可能进一步增加整体风险负担，尤其是在已有其他风险因素时",
+            "frequent alcohol intake may further increase overall risk burden, especially when other risk factors are already present",
+            "el consumo frecuente de alcohol puede aumentar aún más la carga global de riesgo, especialmente cuando ya existen otros factores de riesgo"
+        ))
+
+    if not drivers:
+        drivers.append(tr(
+            "当前自报信息中没有出现非常强的主要风险信号",
+            "the current self-reported profile does not show very strong major risk signals",
+            "el perfil autodeclarado actual no muestra señales de riesgo principal especialmente fuertes"
+        ))
+
+    if lang == "zh":
+        detail = "；".join(drivers)
+        intro = {
+            "Low": "当前结果提示你的风险大体仍处于较低区间。",
+            "Moderate": "当前结果提示你的风险已经高于较低基线水平，但还不一定意味着立即存在明确疾病。",
+            "High": "当前结果说明你的风险特征已经出现比较明显的累积，需要比普通人更认真地看待后续管理。",
+            "Very High": "当前结果说明在这套筛查模型下，你落入了显著偏高的风险分层。"
+        }[result["risk_level"]]
+
+        meaning = {
+            "Low": "这通常意味着从自报变量角度看，强风险信号不多，但这并不等于绝对安全。",
+            "Moderate": "这通常意味着部分危险因素已经开始叠加，风险管理的收益会明显增加。",
+            "High": "这通常意味着你不只是存在单一因素，而是已经出现多因素共同推高风险的情况。",
+            "Very High": "这通常意味着多个主要风险因素正在同时起作用，或者其中某些因素的强度已经足以明显抬高筛查结果。"
+        }[result["risk_level"]]
+
+        return (
+            f"{intro}{meaning}"
+            f" 从当前信息看，最值得关注的风险驱动包括：{detail}。"
+            f" 需要特别注意的是，这个结果更适合作为“是否值得进一步检查与管理”的信号，而不是“是否已经患病”的结论。"
+            f" 如果你本身已有血压、血糖、血脂或家族史方面的担忧，那么这个结果的解释价值会更偏向提醒你尽快做更客观的检测。"
+        )
+
+    elif lang == "en":
+        detail = "; ".join(drivers)
+        intro = {
+            "Low": "The current result suggests that your risk is still broadly in the lower range.",
+            "Moderate": "The current result suggests that your risk is already above a low baseline level, although this does not necessarily imply immediate disease.",
+            "High": "The current result suggests that your risk profile has already accumulated enough adverse features to warrant more serious attention.",
+            "Very High": "The current result suggests that, under this screening model, you fall into a distinctly elevated risk stratum."
+        }[result["risk_level"]]
+
+        meaning = {
+            "Low": "This usually means the self-reported profile does not contain many strong warning signals, but it does not mean absolute safety.",
+            "Moderate": "This usually means some adverse factors are already beginning to cluster, so the value of prevention and follow-up becomes more meaningful.",
+            "High": "This usually means risk is being driven by multiple factors rather than a single isolated issue.",
+            "Very High": "This usually means that several major risk drivers are acting at the same time, or that one or two factors are strong enough to lift the screening result substantially."
+        }[result["risk_level"]]
+
+        return (
+            f"{intro} {meaning} "
+            f"Based on the current inputs, the most relevant drivers include: {detail}. "
+            f"It is important to interpret this result as a signal about whether more structured follow-up and objective testing may be worthwhile, rather than as proof that disease is already present. "
+            f"If you already have concerns related to blood pressure, glucose, lipids, or family history, this result becomes more useful as a prompt to seek more objective evaluation."
+        )
+
     else:
-        if lang == "zh":
-            detail = "，".join(reasons[:-1]) + "，以及" + reasons[-1]
-        elif lang == "en":
-            detail = ", ".join(reasons[:-1]) + ", and " + reasons[-1]
-        else:
-            detail = ", ".join(reasons[:-1]) + " y " + reasons[-1]
+        detail = "; ".join(drivers)
+        intro = {
+            "Low": "El resultado actual sugiere que tu riesgo sigue estando, en términos generales, en el rango más bajo.",
+            "Moderate": "El resultado actual sugiere que tu riesgo ya está por encima de un nivel basal bajo, aunque esto no implica necesariamente enfermedad inmediata.",
+            "High": "El resultado actual sugiere que tu perfil de riesgo ya ha acumulado suficientes factores adversos como para requerir una atención más seria.",
+            "Very High": "El resultado actual sugiere que, dentro de este modelo de cribado, perteneces a un estrato de riesgo claramente elevado."
+        }[result["risk_level"]]
 
-    lead_map = {
-        "zh": {
-            "Low": "你的筛查结果目前处于较低风险范围。",
-            "Moderate": "你的筛查结果提示存在中等水平的心血管风险。",
-            "High": "你的筛查结果提示心血管风险升高。",
-            "Very High": "你的筛查结果在当前模型下属于很高风险组。"
-        },
-        "en": {
-            "Low": "Your screening result is currently in the lower-risk range.",
-            "Moderate": "Your screening result suggests a moderate level of cardiovascular risk.",
-            "High": "Your screening result indicates an elevated cardiovascular risk profile.",
-            "Very High": "Your screening result places you in a very high-risk group under the current model."
-        },
-        "es": {
-            "Low": "Tu resultado de cribado se encuentra actualmente en el rango de menor riesgo.",
-            "Moderate": "Tu resultado de cribado sugiere un nivel moderado de riesgo cardiovascular.",
-            "High": "Tu resultado de cribado indica un perfil de riesgo cardiovascular elevado.",
-            "Very High": "Tu resultado de cribado te sitúa en un grupo de riesgo muy alto según el modelo actual."
-        }
-    }
+        meaning = {
+            "Low": "Esto suele significar que el perfil autodeclarado no contiene muchas señales de alerta fuertes, pero no significa seguridad absoluta.",
+            "Moderate": "Esto suele significar que algunos factores adversos ya están empezando a agruparse, por lo que la prevención y el seguimiento ganan más importancia.",
+            "High": "Esto suele significar que el riesgo está siendo impulsado por varios factores y no por un único problema aislado.",
+            "Very High": "Esto suele significar que varios factores principales están actuando al mismo tiempo, o que uno o dos factores tienen suficiente intensidad como para elevar claramente el resultado del cribado."
+        }[result["risk_level"]]
 
-    tail_map = {
-        "zh": f" 这一估计主要由以下因素驱动：{detail}。",
-        "en": f" This estimate is mainly driven by the following factors: {detail}.",
-        "es": f" Esta estimación está impulsada principalmente por los siguientes factores: {detail}."
-    }
-
-    return lead_map[lang][result["risk_level"]] + tail_map[lang]
+        return (
+            f"{intro} {meaning} "
+            f"Según la información actual, los factores más relevantes incluyen: {detail}. "
+            f"Es importante interpretar este resultado como una señal sobre si puede valer la pena un seguimiento más estructurado y pruebas objetivas, y no como una prueba de que la enfermedad ya esté presente. "
+            f"Si ya tienes preocupaciones relacionadas con la presión arterial, la glucosa, los lípidos o los antecedentes familiares, este resultado resulta más útil como motivo para buscar una evaluación más objetiva."
+        )
 
 # ============================================================
-# 个性化建议
+# 个性化建议：文字也加长
 # ============================================================
 def build_segmented_advice(payload_all: dict, result: dict):
     age = payload_all["RIDAGEYR"]
@@ -460,124 +508,113 @@ def build_segmented_advice(payload_all: dict, result: dict):
 
     if age >= 60 and htn == 1:
         adv.append(tr(
-            "老年且合并高血压：建议把规律血压监测和长期控制放在优先位置。",
-            "Older adult with hypertension: prioritize regular blood pressure monitoring and long-term control.",
-            "Adulto mayor con hipertensión: prioriza el control regular de la presión arterial y su manejo a largo plazo."
+            "老年且合并高血压：你的重点不应该只是“知道自己有高血压”，而应该放在是否真正做到稳定、长期和可追踪的控制。建议把家庭血压监测、用药依从性以及医生给出的目标范围放在优先位置。",
+            "Older adult with hypertension: the key issue is not simply knowing that hypertension exists, but whether it is being controlled in a stable, long-term, and trackable way. Home blood-pressure monitoring, medication adherence, and clinician-defined targets should be priorities.",
+            "Adulto mayor con hipertensión: la cuestión clave no es solo saber que existe hipertensión, sino si se está controlando de forma estable, sostenida y verificable. El control domiciliario de la presión arterial, la adherencia al tratamiento y los objetivos definidos por un profesional deberían ser prioritarios."
         ))
 
     if age >= 60 and activity == 2:
         adv.append(tr(
-            "老年且活动不足：建议从可持续的低冲击活动开始，比如步行或固定自行车。",
-            "Older adult with low activity: start with sustainable low-impact exercise such as walking or stationary cycling.",
-            "Adulto mayor con baja actividad: comienza con ejercicio de bajo impacto y sostenible, como caminar o bicicleta estática."
+            "老年且活动不足：更适合你的通常不是偶尔一次很累的运动，而是低冲击、规律、可长期持续的活动方式。你更需要的是可执行性，而不是短期强度。",
+            "Older adult with low activity: what usually matters more is not occasional exhausting exercise, but low-impact, regular, and sustainable activity. Practical consistency is more valuable than short bursts of intensity.",
+            "Adulto mayor con baja actividad: normalmente importa más la actividad regular, sostenible y de bajo impacto que los esfuerzos intensos ocasionales. La constancia práctica vale más que episodios breves de alta intensidad."
         ))
 
     if bmi >= 30 and activity == 2:
         adv.append(tr(
-            "肥胖且活动不足：优先目标应是体重控制和规律活动。",
-            "Obesity with insufficient activity: the first priority should be weight control and regular movement.",
-            "Obesidad con actividad insuficiente: la primera prioridad debe ser el control del peso y el movimiento regular."
+            "肥胖且活动不足：如果这两个因素同时存在，那么管理重点通常不应放在极端节食或短期突击，而应放在更现实的能量摄入控制、步数增加和体重缓慢下降上。",
+            "Obesity with insufficient activity: when these two factors coexist, management should usually focus less on extreme dieting or short-term effort and more on realistic energy-intake control, higher daily movement, and gradual weight reduction.",
+            "Obesidad con actividad insuficiente: cuando estos dos factores coexisten, la gestión debería centrarse menos en dietas extremas o esfuerzos de corto plazo y más en un control realista de la ingesta energética, mayor movimiento diario y reducción gradual del peso."
         ))
 
     if smoking == 1:
         adv.append(tr(
-            "吸烟人群：戒烟往往是最高收益的干预之一。",
-            "Current smoker profile: smoking cessation is often one of the highest-yield interventions.",
-            "Perfil de fumador actual: dejar de fumar suele ser una de las intervenciones de mayor impacto."
+            "吸烟人群：如果只能优先做一件事，戒烟往往是最有回报的干预之一。它不仅影响单独风险，也会放大血压、代谢和炎症相关风险的长期后果。",
+            "Current smoker profile: if only one intervention can be prioritized, smoking cessation is often among the highest-yield options. It affects not only direct risk, but also amplifies the long-term consequences of blood pressure, metabolic, and inflammatory burden.",
+            "Perfil de fumador actual: si solo pudiera priorizarse una intervención, dejar de fumar suele estar entre las opciones de mayor impacto. No solo afecta el riesgo directo, sino que también amplifica las consecuencias a largo plazo de la carga tensional, metabólica e inflamatoria."
         ))
 
     if diabetes == 1:
         adv.append(tr(
-            "糖尿病相关人群：建议更重视血糖、体重和血压的联动控制。",
-            "Diabetes-related profile: place greater emphasis on combined control of glucose, weight, and blood pressure.",
-            "Perfil relacionado con diabetes: da mayor importancia al control combinado de glucosa, peso y presión arterial."
+            "糖尿病相关人群：你的重点不应只停留在“有没有糖尿病”，而应进一步关注血糖控制是否稳定，以及它是否同时伴随体重、血压和生活方式问题。",
+            "Diabetes-related profile: the key issue is not merely whether diabetes exists, but whether glucose control is stable and whether it coexists with weight, blood pressure, and lifestyle-related issues.",
+            "Perfil relacionado con diabetes: la cuestión clave no es solo si existe diabetes, sino si el control glucémico es estable y si coexiste con problemas de peso, presión arterial y estilo de vida."
         ))
 
     if htn == 1 and bmi >= 25:
         adv.append(tr(
-            "高血压合并超重：建议同时管理体重和血压。",
-            "Hypertension plus excess weight: manage both weight and blood pressure.",
-            "Hipertensión con exceso de peso: maneja tanto el peso como la presión arterial."
+            "高血压合并超重：这通常意味着风险不太可能通过单一行为改变完全逆转，更合理的目标是让体重和血压一起朝更稳定的方向改善。",
+            "Hypertension plus excess weight: this often means risk is unlikely to be fully reversed through one isolated behavior change. A more realistic goal is to improve both weight and blood pressure in a coordinated way.",
+            "Hipertensión con exceso de peso: esto suele significar que el riesgo difícilmente se revertirá por completo con un solo cambio conductual aislado. Un objetivo más realista es mejorar de forma coordinada tanto el peso como la presión arterial."
         ))
 
     if family == 1:
         adv.append(tr(
-            "存在家族史：即使当前没有明确症状，也更值得保持规律随访。",
-            "Family-history profile: even without clear symptoms, regular follow-up is more worthwhile.",
-            "Perfil con antecedentes familiares: incluso sin síntomas claros, vale más la pena mantener un seguimiento regular."
+            "存在家族史：即使家族史暂时没有直接进入模型打分，它依然意味着你在解释结果时应更倾向于谨慎，而不是过度乐观。",
+            "Family-history profile: even though family history does not directly enter the current model score, it still means the result should be interpreted with more caution rather than excessive reassurance.",
+            "Perfil con antecedentes familiares: aunque los antecedentes familiares no entren directamente en la puntuación del modelo actual, el resultado debe interpretarse con mayor cautela y no con exceso de tranquilidad."
         ))
 
     if alcohol == 3:
         adv.append(tr(
-            "经常饮酒：建议重新审视饮酒频率和总量，因为它可能加重整体风险负担。",
-            "Frequent alcohol intake: reconsider drinking frequency and total volume, as it may add to overall risk burden.",
-            "Consumo frecuente de alcohol: conviene revisar la frecuencia y la cantidad total, ya que puede aumentar la carga global de riesgo."
+            "经常饮酒：如果你已经存在其他风险因素，那么高频饮酒更值得被视为“风险放大器”，而不是单独看待的生活方式细节。",
+            "Frequent alcohol intake: if other risk factors are already present, high-frequency drinking is better viewed as a risk amplifier rather than a minor lifestyle detail.",
+            "Consumo frecuente de alcohol: si ya existen otros factores de riesgo, el consumo frecuente debería verse más como un amplificador del riesgo que como un simple detalle del estilo de vida."
         ))
 
     if age < 45 and smoking == 1:
         adv.append(tr(
-            "年轻吸烟人群：虽然年龄仍有一定保护作用，但吸烟会提前推高未来风险。",
-            "Younger smoker profile: age still offers some protection, but smoking can push future risk upward earlier than expected.",
-            "Perfil de fumador joven: la edad todavía ofrece cierta protección, pero fumar puede aumentar el riesgo futuro antes de lo esperado."
+            "年轻吸烟人群：年龄的确可能让短期概率看起来没那么极端，但这并不代表长期风险可以忽略。越早改变，收益通常越大。",
+            "Younger smoker profile: age may make short-term probability look less extreme, but that does not mean long-term risk is negligible. Earlier change usually produces larger long-run benefit.",
+            "Perfil de fumador joven: la edad puede hacer que la probabilidad a corto plazo parezca menos extrema, pero eso no significa que el riesgo a largo plazo sea despreciable. Cuanto antes se cambie, mayor suele ser el beneficio futuro."
         ))
 
     if age < 45 and bmi >= 30:
         adv.append(tr(
-            "年轻肥胖人群：当前概率未必极高，但这是风险长期积累最值得干预的阶段。",
-            "Younger obesity-dominant profile: the immediate probability may not be extreme, but this is an important stage for early intervention.",
-            "Perfil joven con obesidad predominante: la probabilidad inmediata puede no ser extrema, pero esta es una etapa importante para intervenir pronto."
+            "年轻肥胖人群：当前结果未必处于最高层级，但这类情况往往最值得在风险尚可逆时尽早介入。",
+            "Younger obesity-dominant profile: the current result may not yet be in the highest tier, but this is often the stage where early intervention is most worthwhile while risk remains more reversible.",
+            "Perfil joven con obesidad predominante: el resultado actual puede no estar todavía en el nivel más alto, pero esta suele ser la etapa en la que la intervención temprana es más valiosa mientras el riesgo sigue siendo más reversible."
         ))
 
     if diabetes == 1 and htn == 1:
         adv.append(tr(
-            "糖尿病合并高血压：这是临床上更值得重视的风险组合，建议更系统地随访。",
-            "Diabetes plus hypertension: this is a clinically important risk cluster and supports more structured follow-up.",
-            "Diabetes más hipertensión: este es un grupo de riesgo clínicamente importante y justifica un seguimiento más estructurado."
+            "糖尿病合并高血压：这是比单一风险因素更值得重视的组合，因为它往往提示风险来源不止一条路径，随访和客观检测的重要性会进一步上升。",
+            "Diabetes plus hypertension: this is more important than a single isolated factor because it often implies that risk is being driven through multiple pathways, making structured follow-up and objective testing even more valuable.",
+            "Diabetes más hipertensión: esto es más importante que un solo factor aislado, porque suele implicar que el riesgo está siendo impulsado por múltiples vías, lo que aumenta el valor del seguimiento estructurado y de las pruebas objetivas."
         ))
 
     if level == "Very High":
         adv.append(tr(
-            "很高风险组：虽然本工具不是诊断工具，但这个结果支持尽快进行正式临床评估和客观检测。",
-            "Very high screening category: although this tool is not diagnostic, this result supports prompt clinical evaluation and objective testing.",
-            "Categoría de riesgo muy alto: aunque esta herramienta no es diagnóstica, este resultado respalda una evaluación clínica rápida y pruebas objetivas."
+            "很高风险组：虽然这不是诊断结论，但从风险管理角度看，继续停留在自我估计阶段的价值已经有限，更合理的是尽快获得血压、血糖、血脂等客观信息。",
+            "Very high screening category: although this is not a diagnostic conclusion, the value of staying only at the self-estimation stage is limited. A more reasonable next step is to obtain objective information such as blood pressure, glucose, and lipids as soon as possible.",
+            "Categoría de riesgo muy alto: aunque esto no es una conclusión diagnóstica, el valor de permanecer solo en la etapa de autoestimación es limitado. Un paso más razonable es obtener cuanto antes información objetiva como presión arterial, glucosa y lípidos."
         ))
 
     if not adv:
         adv.append(tr(
-            "当前没有触发特别明确的分层特征，建议继续保持体重管理、规律活动和基础体检。",
-            "No strongly specific subgroup pattern was triggered. Continue weight control, regular activity, and routine health checks.",
-            "No se activó un patrón de subgrupo muy específico. Continúa con el control del peso, la actividad regular y los chequeos rutinarios."
+            "当前没有触发特别明确的分层特征，这通常意味着风险管理更应落在长期维持健康习惯和规律体检上，而不是过度紧张或完全忽视。",
+            "No especially strong subgroup pattern was triggered. This usually means that risk management should focus more on maintaining healthy habits and routine check-ups over time, rather than either overreacting or ignoring the issue entirely.",
+            "No se activó un patrón de subgrupo especialmente fuerte. Esto suele significar que la gestión del riesgo debería centrarse más en mantener hábitos saludables y controles rutinarios a lo largo del tiempo, en lugar de reaccionar de forma exagerada o ignorar el asunto."
         ))
 
     return adv[:8]
 
 # ============================================================
-# 图表1：概率条形图
-# 中文图表里为了防止字体环境问题，标题使用英文更稳
+# 图表1
 # ============================================================
 def plot_risk_probability(prob: float):
-    title_map = {
-        "zh": "Estimated Risk Probability",
-        "en": "Estimated Risk Probability",
-        "es": "Probabilidad estimada de riesgo"
-    }
-    y_label_map = {
-        "zh": "Risk Probability",
-        "en": "Risk Probability",
-        "es": "Probabilidad de riesgo"
-    }
-
     fig, ax = plt.subplots(figsize=(7.2, 2.2))
-    ax.barh([y_label_map[lang]], [prob], height=0.45)
+    ax.barh(["Risk Probability"], [prob], height=0.45)
     ax.set_xlim(0, 1)
     ax.set_xlabel("Probability")
-    ax.set_title(title_map[lang])
+    ax.set_title("Estimated Risk Probability")
     ax.text(min(prob + 0.02, 0.92), 0, f"{prob:.3f}", va="center")
     plt.tight_layout()
     return fig
 
 # ============================================================
 # 雷达图
+# 图内标签固定英文，页面标题承担三语言展示
 # ============================================================
 def compute_factor_scores(payload_all: dict):
     scores = {
@@ -642,7 +679,7 @@ def compute_reference_scores(payload_all: dict):
 
     return scores
 
-def plot_small_radar_chart(scores: dict, title: str):
+def plot_small_radar_chart(scores: dict):
     labels = list(scores.keys())
     values = list(scores.values())
 
@@ -659,30 +696,22 @@ def plot_small_radar_chart(scores: dict, title: str):
     ax.set_yticks([20, 40, 60, 80, 100])
     ax.set_yticklabels(["20", "40", "60", "80", "100"], fontsize=8)
     ax.set_ylim(0, 100)
-    ax.set_title(title, y=1.10, fontsize=11)
 
     plt.tight_layout()
     return fig
 
 # ============================================================
-# 图表3：与基线比较
+# 图表3
 # ============================================================
 def plot_baseline_comparison(prob: float, baseline=0.045):
-    labels = [
-        {"zh": "Estimated Risk", "en": "Estimated Risk", "es": "Riesgo estimado"}[lang],
-        {"zh": "Baseline Risk", "en": "Baseline Risk", "es": "Riesgo basal"}[lang]
-    ]
+    labels = ["Estimated Risk", "Baseline Risk"]
     values = [prob, baseline]
 
     fig, ax = plt.subplots(figsize=(7.2, 3.2))
     ax.bar(labels, values)
     ax.set_ylim(0, max(0.2, prob + 0.05))
     ax.set_ylabel("Probability")
-    ax.set_title({
-        "zh": "Estimated Risk vs Baseline",
-        "en": "Estimated Risk vs Baseline",
-        "es": "Riesgo estimado vs basal"
-    }[lang])
+    ax.set_title("Estimated Risk vs Baseline")
 
     for i, v in enumerate(values):
         ax.text(i, v + 0.005, f"{v:.3f}", ha="center")
@@ -745,7 +774,6 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# 模型输入：仍然保持原来的7个变量
 payload_model = {
     "RIDAGEYR": age,
     "RIAGENDR": sex,
@@ -756,7 +784,6 @@ payload_model = {
     "PAQ605": activity
 }
 
-# 全量输入：用于解释/建议/图
 payload_all = {
     **payload_model,
     "FAMILY_HISTORY": family_history,
@@ -791,24 +818,46 @@ if st.button(T["button"]):
     st.subheader(T["interpretation"])
     st.write(explanation)
 
-    st.subheader(T["chart1"])
+    st.subheader(T["how_to_read"])
+    if lang == "zh":
+        st.write(
+            "请把这个结果理解为“在当前输入信息下，你是否更值得进一步关注”的信号，而不是最终结论。"
+            " 概率越高，说明在这套筛查模型中，你与较高风险人群的相似度越高；但这仍然依赖于输入变量的范围，不能替代血压、血糖、血脂、心电图或医生判断。"
+            " 同时，由于这是一个低患病率场景，模型更适合帮助识别谁更值得后续检查，而不是直接断言谁已经患病。"
+        )
+    elif lang == "en":
+        st.write(
+            "Please interpret this result as a signal of whether you may be more worthy of further attention under the current self-reported profile, rather than as a final conclusion. "
+            "A higher probability means stronger similarity to higher-risk groups within this screening model, but it still depends on the limited input variables and does not replace blood pressure, glucose, lipids, ECG, or physician judgment. "
+            "Because this is a low-prevalence setting, the model is better suited to flagging who may deserve follow-up rather than declaring who definitely has disease."
+        )
+    else:
+        st.write(
+            "Interpreta este resultado como una señal de si mereces una atención adicional según tu perfil autodeclarado actual, y no como una conclusión final. "
+            "Una probabilidad más alta significa una mayor similitud con grupos de mayor riesgo dentro de este modelo de cribado, pero sigue dependiendo de variables limitadas y no sustituye la presión arterial, la glucosa, los lípidos, el ECG ni la valoración médica. "
+            "Dado que se trata de un contexto de baja prevalencia, el modelo es más útil para señalar quién merece seguimiento que para afirmar quién tiene definitivamente enfermedad."
+        )
+
+    st.subheader(T["chart1_title"])
     fig1 = plot_risk_probability(result["risk_probability"])
     st.pyplot(fig1)
 
-    st.subheader(T["chart2"])
+    st.subheader(T["chart2_title"])
     user_scores = compute_factor_scores(payload_all)
     ref_scores = compute_reference_scores(payload_all)
 
     radar_col1, radar_col2 = st.columns(2)
     with radar_col1:
-        fig_user = plot_small_radar_chart(user_scores, T["your_profile"])
+        st.markdown(f"**{T['your_profile']}**")
+        fig_user = plot_small_radar_chart(user_scores)
         st.pyplot(fig_user)
 
     with radar_col2:
-        fig_ref = plot_small_radar_chart(ref_scores, T["reference_profile"])
+        st.markdown(f"**{T['reference_profile']}**")
+        fig_ref = plot_small_radar_chart(ref_scores)
         st.pyplot(fig_ref)
 
-    st.subheader(T["chart3"])
+    st.subheader(T["chart3_title"])
     fig3 = plot_baseline_comparison(result["risk_probability"], baseline=0.045)
     st.pyplot(fig3)
 
