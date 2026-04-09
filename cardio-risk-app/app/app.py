@@ -875,61 +875,35 @@ if st.button(T["button"]):
     st.subheader(T["important_note"])
     st.info(T["important_note_text"])
 
-st.markdown(
-    f'<p class="small-note">{T["footer"]}</p>',
-    unsafe_allow_html=True
-)
-footer_html = """
-<hr style="margin-top: 2.5rem; margin-bottom: 1rem; border: none; border-top: 1px solid #d1d5db;">
+st.divider()
 
-<div style="text-align: center; font-size: 0.98rem; color: #4a5568; margin-bottom: 0.35rem;">
-    <strong>Author:</strong> Zikai "Constantin" Wang
-</div>
+st.markdown('**Author:** Zikai "Constantin" Wang')
+st.markdown('**Data Source:** U.S. Centers for Disease Control and Prevention (CDC), NHANES datasets')
 
-<div style="text-align: center; font-size: 0.92rem; color: #718096; margin-bottom: 1.1rem;">
-    <strong>Data Source:</strong> U.S. Centers for Disease Control and Prevention (CDC), NHANES datasets
-</div>
+with st.container():
+    st.markdown("### Disclaimer")
+    st.write(
+        "This application is intended for educational and screening purposes only. "
+        "It does not provide medical advice, diagnosis, or treatment. "
+        "The results are generated from statistical and machine learning models trained on publicly available data, "
+        "and should be interpreted as probabilistic screening signals rather than clinical conclusions."
+    )
 
-<div style="
-    margin-top: 0.8rem;
-    padding: 1rem 1.1rem;
-    border-radius: 14px;
-    background-color: #f8fafc;
-    color: #4a5568;
-    font-size: 0.92rem;
-    line-height: 1.7;
-">
-    <div style="font-weight: 700; margin-bottom: 0.55rem;">Disclaimer</div>
+    st.write("Users should understand that:")
+    st.markdown(
+        """
+- The model relies on self-reported or simplified input variables and may not fully capture an individual’s actual health condition.
+- The output is subject to model limitations, data bias, sampling constraints, and generalization error.
+- A low predicted risk does not guarantee absence of disease, and a high predicted risk does not confirm diagnosis.
+        """
+    )
 
-    <div style="margin-bottom: 0.75rem;">
-        This application is intended for <strong>educational and screening purposes only</strong>.
-        It does not provide medical advice, diagnosis, or treatment.
-        The estimated results are generated from statistical and machine learning models trained on publicly available data,
-        and should be interpreted as <strong>probabilistic screening signals rather than clinical conclusions</strong>.
-    </div>
+    st.write(
+        "If you are experiencing chest pain, shortness of breath, dizziness, fainting, "
+        "or any other concerning physical condition, please seek evaluation from a qualified healthcare professional as soon as possible."
+    )
 
-    <div style="margin-bottom: 0.45rem;">
-        Users should understand that:
-    </div>
-
-    <ul style="margin-top: 0.2rem; margin-bottom: 0.85rem; padding-left: 1.2rem;">
-        <li>The model relies on self-reported or simplified input variables and may not fully capture an individual’s actual health condition.</li>
-        <li>The output is subject to model limitations, data bias, sampling constraints, and generalization error.</li>
-        <li>A low predicted risk does not guarantee absence of disease, and a high predicted risk does not confirm diagnosis.</li>
-    </ul>
-
-    <div style="margin-bottom: 0.75rem;">
-        If you are experiencing symptoms such as chest pain, shortness of breath, dizziness, fainting,
-        or any other concerning physical condition, please seek evaluation from a
-        <strong>qualified healthcare professional</strong> as soon as possible.
-    </div>
-
-    <div>
-        By using this tool, you acknowledge that the developer and data providers bear
-        <strong>no responsibility for medical, financial, or personal decisions</strong>
-        made on the basis of the output.
-    </div>
-</div>
-"""
-
-st.markdown(footer_html, unsafe_allow_html=True)
+    st.write(
+        "By using this tool, you acknowledge that the developer and data providers bear no responsibility "
+        "for medical, financial, or personal decisions made on the basis of the output."
+    )
